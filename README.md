@@ -1,7 +1,7 @@
 # webhook-outbox-kit
 
 Fail-closed webhook signature verification and a transactional outbox, in about
-600 lines with **no dependencies outside the Python standard library**.
+700 lines with **no dependencies outside the Python standard library**.
 
 Two patterns that cover both edges of a webhook-driven system:
 
@@ -12,9 +12,9 @@ Extracted from a production voice-AI system where a dropped message meant a
 family did not learn their parent missed a dose. The IP stayed private; the
 patterns did not need to.
 
-```
+```bash
 pip install -e ".[dev]" && pytest -q
-41 passed in 0.05s
+# 41 passed in 0.05s
 ```
 
 ---
@@ -198,6 +198,11 @@ Not "does the happy path work." The failure modes:
 - a Stripe-signed request does not validate against the Twilio verifier
 - a bad signature on a stale request reports `Invalid`, not `Stale`
 - Twilio params sort deterministically regardless of dict insertion order
+
+## Related
+
+- **[familycheck-engineering](https://github.com/Arash-yazdani/familycheck-engineering)** — the production voice agent this was extracted from. Architecture, design decisions, and five months of evaluation results.
+- **[crisp-eval](https://github.com/Arash-yazdani/crisp-eval)** — the evaluation half of the same system: CRISP scenario taxonomy, cross-family judge enforcement, deterministic safety keys, and Cohen's kappa calibration. 42 tests, no dependencies.
 
 ## License
 
