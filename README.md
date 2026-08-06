@@ -5,8 +5,8 @@ Fail-closed webhook signature verification and a transactional outbox, in about
 
 Two patterns that cover both edges of a webhook-driven system:
 
-- **Inbound** — you only act on requests you can prove came from the vendor.
-- **Outbound** — an alert you promised to send survives the process dying.
+- **Inbound**: you only act on requests you can prove came from the vendor.
+- **Outbound**: an alert you promised to send survives the process dying.
 
 Extracted from a production voice-AI system where a dropped message meant a
 family did not learn their parent missed a dose. The IP stayed private; the
@@ -67,7 +67,7 @@ True exactly-once delivery across a network boundary is not achievable. The
 receiver can always ack and then crash. What *is* achievable, and what this
 does:
 
-- **exactly-once enqueue** — enforced by a `UNIQUE` constraint on `dedupe_key`,
+- **exactly-once enqueue**: enforced by a `UNIQUE` constraint on `dedupe_key`,
   in the schema rather than in application code. Two racing workers that both
   check "does this exist yet" will both see *no*. Only the database can
   actually prevent the double.
@@ -77,7 +77,7 @@ does:
 Anyone claiming more than that is not counting the failure modes.
 
 **The dedupe key must be derived from the business fact.** `dose-4821-missed`
-is correct. A `uuid4()` is not — retrying the handler would enqueue a second
+is correct. A `uuid4()` is not: retrying the handler would enqueue a second
 copy, which is the exact bug the outbox exists to prevent.
 
 ### Failure handling
@@ -86,7 +86,7 @@ copy, which is the exact bug the outbox exists to prevent.
 |---|---|
 | Transient error (timeout, 429, 503) | Exponential backoff, capped, retried |
 | `PermanentError` (bad number, 400) | Quarantined immediately, no retries burned |
-| No sender registered for the topic | Quarantined immediately — it's a deploy bug |
+| No sender registered for the topic | Quarantined immediately; it's a deploy bug |
 | Retries exhausted | Moved to `dead`, stops consuming worker throughput |
 
 A poison message never blocks the batch behind it. Head-of-line blocking is how
@@ -161,7 +161,7 @@ Python 3.10+. No runtime dependencies. FastAPI is needed only for
 ## Storage
 
 Backed by stdlib `sqlite3` so the tests run anywhere. The schema and claim
-query port cleanly to Postgres — one line changes, in `Outbox._claim_sql()`:
+query port cleanly to Postgres; one line changes, in `Outbox._claim_sql()`:
 
 ```sql
 SELECT * FROM outbox
@@ -201,8 +201,8 @@ Not "does the happy path work." The failure modes:
 
 ## Related
 
-- **[familycheck-engineering](https://github.com/Arash-yazdani/familycheck-engineering)** — the production voice agent this was extracted from. Architecture, design decisions, and five months of evaluation results.
-- **[crisp-eval](https://github.com/Arash-yazdani/crisp-eval)** — the evaluation half of the same system: CRISP scenario taxonomy, cross-family judge enforcement, deterministic safety keys, and Cohen's kappa calibration. 42 tests, no dependencies.
+- **[familycheck-engineering](https://github.com/Arash-yazdani/familycheck-engineering)**: the production voice agent this was extracted from. Architecture, design decisions, and five months of evaluation results.
+- **[crisp-eval](https://github.com/Arash-yazdani/crisp-eval)**: the evaluation half of the same system (CRISP scenario taxonomy, judge-family checks, deterministic safety keys, judge-vs-human agreement statistics). 42 tests, no dependencies.
 
 ## License
 
