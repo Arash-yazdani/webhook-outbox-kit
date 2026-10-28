@@ -8,8 +8,8 @@ Two patterns that cover both edges of a webhook-driven system:
 - **Inbound**: you only act on requests you can prove came from the vendor.
 - **Outbound**: an alert you promised to send survives the process dying.
 
-Extracted from a production voice-AI system where a dropped message meant a
-family did not learn their parent missed a dose. The IP stayed private; the
+Extracted from a voice-AI system in private beta, where a dropped message would
+mean a family does not learn their parent missed a dose. The IP stayed private; the
 patterns did not need to.
 
 ```bash
@@ -201,7 +201,7 @@ Not "does the happy path work." The failure modes:
 
 ## Related
 
-- **[familycheck-engineering](https://github.com/Arash-yazdani/familycheck-engineering)**: the production voice agent this was extracted from. Architecture, design decisions, and five months of evaluation results.
+- **[familycheck-engineering](https://github.com/Arash-yazdani/familycheck-engineering)**: the voice agent (private beta) this was extracted from. Architecture, design decisions, and five months of evaluation results.
 - **[crisp-eval](https://github.com/Arash-yazdani/crisp-eval)**: the evaluation half of the same system (CRISP scenario taxonomy, judge-family checks, deterministic safety keys, judge-vs-human agreement statistics). 42 tests, no dependencies.
 
 ## License
